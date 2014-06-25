@@ -40,12 +40,15 @@
             <add-to-group group-id="GenerateGroup" anchor="last"/>
         </action>
 
-        <action id="SortStringsAction"
-                class="com.civ.stringsTools.SortStringsAction"
-                text="Sort strings"
-                description="Sort strings in the same order, as in the default strings.xml">
+        <group id="StringsToolsGroup">
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
-        </action>
+            <separator/>
+            <action id="SortStringsAction"
+                    class="com.civ.stringsTools.SortStringsAction"
+                    text="Sort strings"
+                    description="Sort strings in the same order, as in the default strings.xml"/>
+            <separator/>
+        </group>
 
     </actions>
 

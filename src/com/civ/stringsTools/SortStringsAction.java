@@ -5,17 +5,10 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiElementFactory;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.impl.PsiElementFactoryImpl;
-import com.intellij.psi.impl.source.xml.XmlElementImpl;
-import com.intellij.psi.impl.source.xml.XmlTagImpl;
 import com.intellij.psi.xml.XmlComment;
-import com.intellij.psi.xml.XmlElement;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
-import com.intellij.xml.XmlPsiManager;
-import com.intellij.xml.util.XmlPsiUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,27 +52,27 @@ public class SortStringsAction extends AnAction {
             // Create maps of pairs <Element name, Element> to ease element search by name
             Map<String, PsiElement> referenceMap = new HashMap<String, PsiElement>();
             Map<String, PsiElement> targetMap = new HashMap<String, PsiElement>();
-            for(int i = 0; i < referenceElements.size(); i++) {
+            for (int i = 0; i < referenceElements.size(); i++) {
                 PsiElement element = referenceElements.get(i);
                 referenceMap.put(getElementName(element), element);
             }
-            for(int i = 0; i < targetElements.size(); i++) {
+            for (int i = 0; i < targetElements.size(); i++) {
                 PsiElement element = targetElements.get(i);
                 targetMap.put(getElementName(element), element);
             }
 
             int targetIndex = 0;
-            for(int i = 0; i < Math.min(referenceElements.size(), targetElements.size()); i++) {
+            for (int i = 0; i < Math.min(referenceElements.size(), targetElements.size()); i++) {
                 String referenceName = getElementName(referenceElements.get(i));
                 String targetName = getElementName(targetElements.get(targetIndex));
 
-                if(referenceName.equals(targetName)) {
+                if (referenceName.equals(targetName)) {
                     targetIndex++;
                     continue;
                 }
 
                 PsiElement replace = targetMap.get(referenceName);
-                if(replace == null)
+                if (replace == null)
                     continue;
 
                 int replaceIndex = targetElements.indexOf(replace);
@@ -97,8 +90,8 @@ public class SortStringsAction extends AnAction {
         private List<PsiElement> getTagsAndComments(XmlFile file) {
             List<PsiElement> result = new ArrayList<PsiElement>();
             PsiElement[] elements = file.getRootTag().getChildren();
-            for(PsiElement element : elements) {
-                if(element instanceof XmlTag || element instanceof XmlComment)
+            for (PsiElement element : elements) {
+                if (element instanceof XmlTag || element instanceof XmlComment)
                     result.add(element);
             }
 
@@ -108,7 +101,7 @@ public class SortStringsAction extends AnAction {
         private void swapElements(List<PsiElement> elements, Map<String, PsiElement> map, int index1, int index2) {
             PsiElement element1 = elements.get(index1);
             PsiElement element2 = elements.get(index2);
-            PsiElement parent =  element1.getParent();
+            PsiElement parent = element1.getParent();
 
             // Swap elements in the PSI tree
             PsiElement newElement1 = parent.addAfter(element2, element1);

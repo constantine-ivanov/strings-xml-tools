@@ -37,7 +37,7 @@ public class AddMissingStringsAction extends AnAction {
     @Override
     public void update(AnActionEvent e) {
         PsiFile file = e.getData(DataKeys.PSI_FILE);
-        if(!Helpers.isStringsFile(file))
+        if (!Helpers.isStringsFile(file))
             e.getPresentation().setEnabled(false);
     }
 
