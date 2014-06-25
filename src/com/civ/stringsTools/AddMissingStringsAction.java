@@ -19,17 +19,10 @@ import java.util.Set;
  */
 public class AddMissingStringsAction extends AnAction {
 
-    private static final String STRINGS_FILE_NAME = "strings.xml";
-    private static final String DEFAULT_VALUES_DIR_NAME = "values";
-    private static final String LOCALIZED_VALUES_DIR_NAME = "values-";
-    private static final String TAG_STRING = "string";
-    private static final String TAG_STRING_ARRAY = "string-array";
-    private static final String ATTRIBUTE_NAME = "name";
-
     @Override
     public void actionPerformed(AnActionEvent e) {
         XmlFile currentFile = (XmlFile) e.getData(DataKeys.PSI_FILE);
-        XmlFile defaultFile = (XmlFile) getDefaultStringsFile(currentFile);
+        XmlFile defaultFile = (XmlFile) Helpers.getDefaultStringsFile(currentFile);
 
         if (currentFile == defaultFile) {
             List<XmlFile> localizedFiles = getLocalizedStringsFiles(currentFile);
@@ -44,30 +37,11 @@ public class AddMissingStringsAction extends AnAction {
     @Override
     public void update(AnActionEvent e) {
         PsiFile file = e.getData(DataKeys.PSI_FILE);
-
-        if (!(file instanceof XmlFile))
-            e.getPresentation().setEnabled(false);
-
-        if (!file.getName().equals(STRINGS_FILE_NAME))
+        if(!Helpers.isStringsFile(file))
             e.getPresentation().setEnabled(false);
     }
 
-    private PsiFile getDefaultStringsFile(PsiFile currentFile) {
-        PsiDirectory currentDir = currentFile.getContainingDirectory();
-        if (currentDir == null)
-            return null;
-        // If the specified file is from the "values" directory, it's already our default strings file
-        if (currentDir.getName().equals(DEFAULT_VALUES_DIR_NAME))
-            return currentFile;
-
-        PsiDirectory defaultDir = currentDir.getParentDirectory().findSubdirectory(DEFAULT_VALUES_DIR_NAME);
-        if (defaultDir == null)
-            return null;
-
-        return defaultDir.findFile(STRINGS_FILE_NAME);
-    }
-
-    private List<XmlFile> getLocalizedStringsFiles(PsiFile currentFile) {
+    private static List<XmlFile> getLocalizedStringsFiles(PsiFile currentFile) {
         PsiDirectory currentDir = currentFile.getContainingDirectory();
         if (currentDir == null)
             return null;
@@ -79,8 +53,8 @@ public class AddMissingStringsAction extends AnAction {
         List<XmlFile> result = new ArrayList<XmlFile>();
         PsiDirectory[] subdirs = resDir.getSubdirectories();
         for (PsiDirectory subdir : subdirs) {
-            if (subdir.getName().startsWith(LOCALIZED_VALUES_DIR_NAME)) {
-                XmlFile localizedFile = (XmlFile) subdir.findFile(STRINGS_FILE_NAME);
+            if (subdir.getName().startsWith(Helpers.LOCALIZED_VALUES_DIR_NAME)) {
+                XmlFile localizedFile = (XmlFile) subdir.findFile(Helpers.STRINGS_FILE_NAME);
                 if (localizedFile != null)
                     result.add(localizedFile);
             }
@@ -88,7 +62,6 @@ public class AddMissingStringsAction extends AnAction {
 
         return result;
     }
-
 
     private static class AddMissingStringsCommand implements Runnable {
 
@@ -102,7 +75,7 @@ public class AddMissingStringsAction extends AnAction {
             this.mDestination = destination;
 
             String dirName = destination.getContainingDirectory().getName();
-            mLocalizationName = dirName.equals(DEFAULT_VALUES_DIR_NAME) ? "def" : dirName.substring(7);
+            mLocalizationName = dirName.equals(Helpers.DEFAULT_VALUES_DIR_NAME) ? "def" : dirName.substring(7);
         }
 
         @Override
@@ -111,7 +84,7 @@ public class AddMissingStringsAction extends AnAction {
             XmlTag[] tags = mSource.getRootTag().getSubTags();
 
             for (XmlTag tag : tags) {
-                String name = tag.getAttributeValue(ATTRIBUTE_NAME);
+                String name = tag.getAttributeValue(Helpers.ATTRIBUTE_NAME);
                 if (name != null && !existingNames.contains(name)) {
                     XmlTag resultTag = mDestination.getRootTag().addSubTag(tag, false);
                     localizeTag(resultTag);
@@ -124,7 +97,7 @@ public class AddMissingStringsAction extends AnAction {
             XmlTag[] tags = file.getRootTag().getSubTags();
 
             for (XmlTag tag : tags) {
-                String name = tag.getAttributeValue(ATTRIBUTE_NAME);
+                String name = tag.getAttributeValue(Helpers.ATTRIBUTE_NAME);
                 if (name != null)
                     names.add(name);
             }
@@ -134,9 +107,9 @@ public class AddMissingStringsAction extends AnAction {
 
         private void localizeTag(XmlTag tag) {
             String name = tag.getName();
-            if (name.equals(TAG_STRING))
+            if (name.equals(Helpers.TAG_STRING))
                 localizeStringTag(tag);
-            else if (name.equals(TAG_STRING_ARRAY))
+            else if (name.equals(Helpers.TAG_STRING_ARRAY))
                 localizeStringArrayTag(tag);
             // Do nothing for other tags
         }
