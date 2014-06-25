@@ -2,27 +2,22 @@
     <id>com.civ.androidStringsTools</id>
     <name>Android strings.xml tools</name>
     <version>1.0</version>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="civanov.aiesec@gmail.com">Constantine Ivanov</vendor>
 
-    <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
-    ]]></description>
+    <description>
+        Provides simple actions for sorting entries in Android localization files and adding missing ones.
+    </description>
 
     <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
-    ]]>
-    </change-notes>
+      Initial release
+    ]]></change-notes>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="131"/>
+    <idea-version since-build="93.13"/>
 
     <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
          on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
-    -->
+    <depends>org.jetbrains.android</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
@@ -37,12 +32,21 @@
     </project-components>
 
     <actions>
+
         <action id="AddMissingStringsAction"
                 class="com.civ.stringsTools.AddMissingStringsAction"
                 text="Add missing strings"
                 description="Add missing strings from the default string.xml">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
         </action>
+
+        <action id="SortStringsAction"
+                class="com.civ.stringsTools.SortStringsAction"
+                text="Sort strings"
+                description="Sort strings in the same order, as in the default strings.xml">
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+
     </actions>
 
 </idea-plugin>
