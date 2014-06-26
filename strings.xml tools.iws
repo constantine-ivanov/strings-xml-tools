@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="321c2a9a-cbd1-4f98-b0b7-9141f47364b1" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/civ/stringsTools/SortStringsAction.java" afterPath="$PROJECT_DIR$/src/com/civ/stringsTools/SortStringsAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/META-INF/plugin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/strings.xml tools.iws" afterPath="$PROJECT_DIR$/strings.xml tools.iws" />
     </list>
     <ignored path="strings.xml tools.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -35,7 +32,7 @@
           </provider>
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.2311248" vertical-offset="0" max-vertical-offset="649">
-              <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -829,7 +826,7 @@
       </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.2311248" vertical-offset="0" max-vertical-offset="649">
-          <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
         </state>
       </provider>
