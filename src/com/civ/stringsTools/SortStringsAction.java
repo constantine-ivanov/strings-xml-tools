@@ -30,7 +30,7 @@ public class SortStringsAction extends AnAction {
         PsiFile file = e.getData(DataKeys.PSI_FILE);
 
         if (!Helpers.isLocalizedStringsFile(file))
-            e.getPresentation().setEnabled(false);
+            e.getPresentation().setVisible(false);
     }
 
 
