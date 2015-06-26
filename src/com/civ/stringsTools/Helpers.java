@@ -15,6 +15,7 @@ public class Helpers {
     public static final String LOCALIZED_VALUES_DIR_NAME = "values-";
     public static final String TAG_STRING = "string";
     public static final String TAG_STRING_ARRAY = "string-array";
+    public static final String TAG_PLURALS = "plurals";
     public static final String ATTRIBUTE_NAME = "name";
 
     /**

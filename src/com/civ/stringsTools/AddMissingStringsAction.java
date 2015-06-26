@@ -4,8 +4,10 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiFile;
+import com.intellij.psi.*;
+import com.intellij.psi.impl.source.tree.PsiPlainTextImpl;
+import com.intellij.psi.impl.source.xml.XmlCommentImpl;
+import com.intellij.psi.xml.XmlComment;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 
@@ -109,14 +111,24 @@ public class AddMissingStringsAction extends AnAction {
             String name = tag.getName();
             if (name.equals(Helpers.TAG_STRING))
                 localizeStringTag(tag);
-            else if (name.equals(Helpers.TAG_STRING_ARRAY))
+            else if (name.equals(Helpers.TAG_STRING_ARRAY) || name.equals(Helpers.TAG_PLURALS))
                 localizeStringArrayTag(tag);
             // Do nothing for other tags
         }
 
         private void localizeStringTag(XmlTag tag) {
+            // Do nothing if string tag contains subtags
+            if (tag.getSubTags().length > 0)
+                return;
+
             String text = tag.getValue().getText();
-            tag.getValue().setText(String.format("%s:[%s]", mLocalizationName, text));
+            String trimmedText = tag.getValue().getTrimmedText();
+            boolean isCdata = text.startsWith("<![CDATA[");
+            String newText = String.format("%s:[%s]", mLocalizationName, isCdata ? trimmedText : text);
+            if (isCdata)
+                tag.getValue().setText(newText);
+            else
+                tag.getValue().setEscapedText(newText);
         }
 
         private void localizeStringArrayTag(XmlTag tag) {
@@ -124,7 +136,6 @@ public class AddMissingStringsAction extends AnAction {
             for (XmlTag subtag : subtags)
                 localizeStringTag(subtag);
         }
-
     }
 
     private static class AddMissingStringsFromMultipleSourcesCommand implements Runnable {
