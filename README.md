@@ -1,3 +1,5 @@
+#The project is no longer developed or supported
+
 #Android strings.xml tools
 
 A plugin for Intellij IDEA or Android studio which eases management of strings in multiple localization 
